@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Config;
+use Log;
 use App;
 use \Debugbar;
 use IanLChapman\PigLatinTranslator\Parser;
@@ -44,6 +45,22 @@ class BookController extends Controller
             'caseSensitive' => $request->has('caseSensitive'),
             'searchResults' => $searchResults
         ]);
+    }
+    /**
+     * GET /books/create
+     * 
+     */
+    public function create() {
+        return view('books.create');
+    }
+
+    /**
+     * POST /books
+     */
+    public function store(Request $request) {
+        // dump($request->all());
+        Log::info('add the book ' . $request->input('title'));
+        return redirect('/books');
     }
 
     public function test($title = null) {
