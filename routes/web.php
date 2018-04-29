@@ -20,7 +20,12 @@ Route::get('/books', 'BookController@index');
 Route::get('/books/create', 'BookController@create');
 Route::post('/books', 'BookController@store');
 Route::get('/books/search', 'BookController@search');
-Route::get('/books/{title}', 'BookController@show');
+Route::get('/books/{id}', 'BookController@show');
+Route::get('/books/{id}/edit', 'BookController@edit');
+Route::put('/books/{id}', 'BookController@update');
+
+Route::get('/books/{id}/delete', 'BookController@delete');
+Route::delete('/books/{id}', 'BookController@destroy');
 
 Route::any('/practice/{n?}', 'PracticeController@index');
 

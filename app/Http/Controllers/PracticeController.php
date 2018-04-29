@@ -9,9 +9,13 @@ use App\Book;
 
 class PracticeController extends Controller
 {
+
+
     // Remove any/all books by the author “J.K. Rowling”.
     public function practice16() {
-        $books = Book::where('author', '=', 'J.K. Rowling')->get();
+        $books = Book::all();
+        echo $books;
+        // $books = Book::where('author', '=', 'J.K. Rowling')->get();
         if (!$books) {
             dump('no books');
         } else {
