@@ -29,7 +29,7 @@
             <div class="book cf">
                 <img src="{{$book->cover_url}}" alt="" class="cover" alt="Cover image for {{$book->title}}">
                 <h2>{{$book->title}}</h2>
-                <p>By {{$book->author}}</p>
+                <p>By {{$book->author->first_name . ' ' . $book->author->last_name}}</p>
                 <p>Published in {{$book->published_year}}</p>
                 <a href="/books/{{$book->id}}">View</a> |
                 <a href="{{$book->purchase_url}}">Purchase</a>

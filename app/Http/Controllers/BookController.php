@@ -7,6 +7,7 @@ use Config;
 use Log;
 use App;
 use App\Book;
+use App\Author;
 use \Debugbar;
 use IanLChapman\PigLatinTranslator\Parser;
 
@@ -62,7 +63,11 @@ class BookController extends Controller
      * 
      */
     public function create() {
-        return view('books.create');
+        return view('books.create')
+            ->with([
+                'book' => new Book(),
+                'authorsForDropdown' => Author::getAuthorsForDropdown()
+            ]);
     }
 
     /**
@@ -71,6 +76,7 @@ class BookController extends Controller
     public function store(Request $request) {
         $this->validate($request, [
             'title' => 'required',
+            'author_id' => 'required',
             'published_year' => 'required|digits:4|numeric',
             'cover_url' => 'required|url',
             'purchase_url' => 'required|url'
@@ -80,7 +86,7 @@ class BookController extends Controller
 
         $book = new Book();
         $book->title = $title;
-        $book->author = $request->author;
+        $book->author_id = $request->author_id;
         $book->published_year = $request->published_year;
         $book->cover_url = $request->cover_url;
         $book->purchase_url = $request->purchase_url;
@@ -96,7 +102,10 @@ class BookController extends Controller
         if (!$book) {
             return redirect('/books')->with(['alert' => 'Book ' . $id . ' not found.']);
         }   
-        return view('books.edit')->with(['book' => $book]);
+        return view('books.edit')->with([
+            'book' => $book,
+            'authorsForDropdown' => Author::getAuthorsForDropdown()
+        ]);
     }
 
     public function update(Request $request, $id) {
@@ -104,13 +113,14 @@ class BookController extends Controller
             'title' => 'required',
             'published_year' => 'required|digits:4|numeric',
             'cover_url' => 'required|url',
-            'purchase_url' => 'required|url'
+            'purchase_url' => 'required|url',
+            'author_id' => 'required'
         ]);
         
         $book = Book::find($id);
         $book->title = $request->title;
-        $book->author = $request->author;
         $book->published_year = $request->published_year;
+        $book->author_id = $request->author_id;
         $book->cover_url = $request->cover_url;
         $book->purchase_url = $request->purchase_url;
         $book->save();
@@ -129,11 +139,12 @@ class BookController extends Controller
         return view('books.delete')->with(['book' => $book]);
     }
 
+    // DELETE books/{id}/delete
     public function destroy($id) {
         $book = Book::find($id);
         $book->delete();
         return redirect('/books')
-            ->with(['alert' => '"' . $book . '" was removed.'])
+            ->with(['alert' => '"' . $book . '" was removed.']);
     }
     
     public function test($title = null) {

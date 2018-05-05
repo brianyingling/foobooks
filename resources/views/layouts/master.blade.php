@@ -16,6 +16,25 @@
         </div>
     @endif
 
+    <nav>
+        <ul>
+            @foreach(config('app.nav') as $link => $label)
+                <li><a href='{{ $link }}' class='{{ Request::is(substr($link, 1)) ? 'active' : '' }}'>{{ $label }}</a>
+            @endforeach
+    
+            <li>
+                @if(Auth::check())
+                <form method='POST' id='logout' action='/logout'>
+                    {{ csrf_field() }}
+                    <a href='#' onClick='document.getElementById("logout").submit();'>Logout</a>
+                </form>
+                @else
+                    <a href='/login'>Login</a>
+                @endif
+            </li>
+        </ul>
+    </nav>
+    
     <header>
         <a href="/">
             <img src="/images/foobooks-logo@2x.png" id="logo" alt="Foobooks logo">
